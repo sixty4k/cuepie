@@ -34,8 +34,7 @@ int main (int argc, char *argv[])
  
   //Setup check
   if (argv[1] == NULL){
-      printf("Please specify (on the command line) the path to the dev event interface devicen");
-      exit (0);
+    device = "/dev/input/event0";
     }
  
   if ((getuid ()) != 0)
@@ -48,19 +47,15 @@ int main (int argc, char *argv[])
   if ((fd = open (device, O_RDONLY)) == -1)
     printf ("%s is not a vaild device.n", device);
  
-  //Print Device Name
-  ioctl (fd, EVIOCGNAME (sizeof (name)), name);
-  printf ("Reading From : %s (%s)n", device, name);
- 
   while (1){
       if ((rd = read (fd, ev, size * 64)) < size)
           perror_exit ("read()");
  
       value = ev[0].value;
  
-      //if (value != ' ' && ev[1].value == 1 && ev[1].type == 1){ // Only read the key press event
-       printf ("%d\n", (ev[1].value));
-      //}
+      if (value != ' ' && ev[1].value == 1 && ev[1].type == 1){ // Only read the key press event
+       printf ("%d\n", (ev[1].code));
+      }
   }
  
   return 0;
