@@ -12,6 +12,8 @@
 #include <sys/time.h>
 #include <termios.h>
 #include <signal.h>
+
+int keyLookupArray[58]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Q','W','E','R','T','Y','U','I','O','P',0,0,0,0,'A','S','D','F','G','H','J','K','L',0,0,0,0,0,'Z','X','C','V','B','N','M',0,0,0,0,0,0,' '};
  
 void handler (int sig)
 {
@@ -54,7 +56,9 @@ int main (int argc, char *argv[])
       value = ev[0].value;
  
       if (value != ' ' && ev[1].value == 1 && ev[1].type == 1){ // Only read the key press event
-       printf ("%d\n", (ev[1].code));
+    	    printf ("%d", (ev[1].code));
+      } else if (ev[1].code == 28 ) {
+          printf ("\n");
       }
   }
  
