@@ -13,11 +13,11 @@
 #include <termios.h>
 #include <signal.h>
 
-int keyLookupArray[58]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'Q','W','E','R','T','Y','U','I','O','P',0,0,0,0,'A','S','D','F','G','H','J','K','L',0,0,0,0,0,'Z','X','C','V','B','N','M',0,0,0,0,0,0,' '};
+int mkeycodes[12] = { 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
  
 void handler (int sig)
 {
-  printf ("nexiting...(%d)n", sig);
+  printf ("\nexiting...(%d)\n", sig);
   exit (0);
 }
  
@@ -40,7 +40,7 @@ int main (int argc, char *argv[])
     }
  
   if ((getuid ()) != 0)
-    printf ("You are not root! This may not work...n");
+    printf ("You are not root! This may not work...\n");
  
   if (argc > 1)
     device = argv[1];
@@ -55,10 +55,12 @@ int main (int argc, char *argv[])
  
       value = ev[0].value;
  
-      if (value != ' ' && ev[1].value == 1 && ev[1].type == 1){ // Only read the key press event
-    	    printf ("%d", (ev[1].code));
-      } else if (ev[1].code == 28 ) {
-          printf ("\n");
+      if (value != ' ' && ev[1].value == 1 && ev[1].type == 1 ){ // Only read the key press event
+  	      if (ev[1].code != 28 ){
+              printf ("%d", (mkeycodes[(ev[1].code)]));
+          } else  {
+              printf ("\n");
+          }
       }
   }
  
