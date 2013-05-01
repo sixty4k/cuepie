@@ -17,7 +17,7 @@ int mkeycodes[12] = { 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
  
 void handler (int sig)
 {
-  printf ("\nexiting...(%d)\n", sig);
+  fprintf (stderr, "\nexiting...(%d)\n", sig);
   exit (0);
 }
  
@@ -40,14 +40,14 @@ int main (int argc, char *argv[])
     }
  
   if ((getuid ()) != 0)
-    printf ("You are not root! This may not work...\n");
+    fprintf (stderr, "You are not root! This may not work...\n");
  
   if (argc > 1)
     device = argv[1];
  
   //Open Device
   if ((fd = open (device, O_RDONLY)) == -1)
-    printf ("%s is not a vaild device.n", device);
+    fprintf (stderr, "%s is not a vaild device.\n", device);
  
   while (1){
       if ((rd = read (fd, ev, size * 64)) < size)
@@ -57,9 +57,10 @@ int main (int argc, char *argv[])
  
       if (value != ' ' && ev[1].value == 1 && ev[1].type == 1 ){ // Only read the key press event
   	      if (ev[1].code != 28 ){
-              printf ("%d", (mkeycodes[(ev[1].code)]));
+              fprintf (stdout, "%d", (mkeycodes[(ev[1].code)]));
           } else  {
-              printf ("\n");
+              fprintf (stdout, "\n");
+              fflush (stdout);
           }
       }
   }
